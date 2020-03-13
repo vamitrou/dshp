@@ -5,6 +5,7 @@ json_args = json.loads(sys.argv[1])
 hostname = json_args["hostname"]
 ip = json_args["ip"]
 time = json_args["time"]
+port = json_args["port"]
 try:
     mail_from = os.environ["MAIL_FROM"]
     smtp_server = os.environ["SMTP_SERVER"]
@@ -27,13 +28,14 @@ try:
     if smtp_user and smtp_pass:
         smtpObj.login(smtp_user, smtp_pass)
     for mail_address in mail_to:
+        data = "there have an attempet to access " + hostname ":" + str(port) + " at " + time + " from ip address " + ip
         message = """\
 From: %s
 To: %s
 Subject: %s
 
 %s\
-""" % (mail_from, mail_address,"DSHP alert: " + hostname + " access attempt detected", "there have an attempet to access " + hostname + " at " + time + " from ip address " + ip)
+        """ % (mail_from, mail_address,"DSHP alert: " + hostname + " access attempt detected", data)
         smtpObj.sendmail(mail_from, mail_to, message)
         smtpObj.quit()
 except:
