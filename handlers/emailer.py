@@ -8,13 +8,10 @@ time = json_args["time"]
 try:
     mail_from = os.environ["MAIL_FROM"]
     smtp_server = os.environ["SMTP_SERVER"]
-    smtp_port = os.environ["SMTP_PORT"]
-    smtp_user = os.environ["SMTP_USER"]
-    smtp_pass = os.environ["SMTP_PASS"]
-    try:
-        smtp_tls = os.environ["SMTP_TLS"]
-    except:
-        pass
+    smtp_port = os.environ.get("SMTP_PORT", 25)
+    smtp_user = os.environ.get("SMTP_USER")
+    smtp_pass = os.environ.get("SMTP_PASS")
+    smtp_tls = os.environ.get("SMTP_TLS", "False").lower()
     mail_to = os.environ["MAIL_TO"].split(",")
 except:
     print "unable to send mail - missing one of the envvars of the emailer.py handler"
@@ -23,11 +20,12 @@ except:
 try:
     smtpObj = smtplib.SMTP(host=smtp_server,port=smtp_port)
     try:
-        if smtp_tls == "True":
+        if smtp_tls == "true":
             smtpObj.starttls()
     except:
         pass
-    smtpObj.login(smtp_user, smtp_pass)
+    if smtp_user and smtp_pass:
+        smtpObj.login(smtp_user, smtp_pass)
     for mail_address in mail_to:
         message = """\
 From: %s
