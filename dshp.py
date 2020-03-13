@@ -15,7 +15,7 @@ default_conf = {"port": 8888,
 
 
 try:
-    conf_file = json.load(open("conf.json"))
+    conf_file = json.load(open("conf/conf.json"))
     print("loaded conf.json file")
 except:
     print("Warning - unable to load correctly phrased json config file")

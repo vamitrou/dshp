@@ -28,7 +28,7 @@ try:
     if smtp_user and smtp_pass:
         smtpObj.login(smtp_user, smtp_pass)
     for mail_address in mail_to:
-        data = "there have an attempet to access " + hostname + ":" + str(port) + " at " + time + " from ip address " + ip
+        data = "[" + time + "] There was an attempt to access " + hostname + ":" + str(port) + " from: " + ip
         message = """\
 From: %s
 To: %s
